@@ -23,7 +23,7 @@ either a stand-alone script or be imported into your own python script.
 
 Stand-alone usage:
 
-```python
+```
 usage: phylogeny.py [-h] [-output OUTPUT] [-format FORMAT] [-minimal]
                     [-list_formats]
                     input
