@@ -15,38 +15,45 @@ Currently assumes Avida defaults in .spop fields.
 import argparse, os, copy
 import pandas as pd
 
-valid_out_formats = ["csv", "json"]
+VALID_OUT_FORMATS = ["csv", "json"]
+AVIDA_SET_FIELDS = ["parents", "cells", "gest_offset", "lineage"]
+AVIDA_SET_DELIM = ","
 
-avida_set_fields = ["parents", "cells", "gest_offset", "lineage"]
-avida_set_delim = ","
+def Convert_AvidaSpop_To_StdPhylogeny(input_fpath, output_fpath=None, output_format="csv", minimal_output=False):
+    """Convert Avida .spop file (default population output file for Avida) to ALife
+       standard phylogeny format.
 
-def main():
-    # Setup command line arguments.
-    parser = argparse.ArgumentParser(description="Avida .spop to ALife standard-compliant phylogeny converter.")
-    parser.add_argument("input", type=str, help="Input avida .spop file.")
-    parser.add_argument("-output", "-out", type=str, help="Name to assign to standard-compliant output file.")
-    parser.add_argument("-format", type=str, default="csv", help="What standard file format should this script output? Valid options: 'JSON', 'CSV'")
-    parser.add_argument("-minimal", action="store_true", help="Store minimal data in output file.")
-
-    # Parse command line arguments.
-    args = parser.parse_args()
-
-    # Extract/validate arguments
-    in_fp = args.input
-    if (not os.path.isfile(in_fp)):
-        exit("Failed to find provided input file ({})".format(in_fp))
+    Args:
+        input_fpath (str): The path to the target Avida .spop file.
+        output_fpath (str): The full path (including file name) to write standard
+            phylogeny file to. If set to 'None', will output in same location as
+            the specified Avida .spop file.
+        output_format (str): The output format. Must be one of a valid set of supported
+            output formats ('CSV', 'JSON')
+        minimal_output (boolean): Should output be minimal? If so, only output minimal
+            requirements (+ available conventional fields) for phylogeny standard.
     
-    out_format = args.format.lower()
-    if (not out_format in valid_out_formats):
-        exit("Invalid output format provided ({}). Valid arguments include: {}".format(out_format, valid_out_formats))
+    Returns:
+        bool: True if successful, False otherwise.
     
-    out_fp = args.output if (args.output != None) else args.input.replace(".spop", "_standard-phylogeny.{}".format(out_format))
+    Raises:
+        ValueError: If input_fpath is invalid.
+        ValueError: If output_format does not specify a supported format.
 
-    minimal_out = args.minimal
+    """    
+    # Is input_fpath a valid file?
+    if (not os.path.isfile(input_fpath)):
+        raise ValueError("Failed to find provided input file ({})".format(input_fpath))
+
+    # Is output_format valid?
+    if (not output_format in VALID_OUT_FORMATS):
+        raise ValueError("Invalid output format provided ({}). Valid arguments include: {}".format(output_format, VALID_OUT_FORMATS))
+    
+    output_fpath = output_fpath if (output_fpath != None) else input_fpath.replace(".spop", "_standard-phylogeny.{}".format(output_format))
 
     # Open and parse input file into pandas data frame.
     # - Read in file, store as dict, use dict to make pandas dataframe object.
-    with open(in_fp, "r") as fp:
+    with open(input_fpath, "r") as fp:
         # Extract header information.
         header = None
         for line in fp:
@@ -54,7 +61,7 @@ def main():
                 header = line.replace("#format", "").strip().split(" ")
                 break
         if header == None:
-            exit("Failed to find file format information in {}".format(in_fp))
+            exit("Failed to find file format information in {}".format(input_fpath))
         
         # Collect data from Avida file in format that will be easy to convert to
         # pandas dataframe object.
@@ -71,7 +78,7 @@ def main():
                 # If we don't have the value for a field, set to 'NONE'
                 value = line[i] if i < len(line) else "NONE"
                 # If the field is known to be a set, split on ','
-                if header[i] in avida_set_fields: value = value.split(avida_set_delim)
+                if header[i] in AVIDA_SET_FIELDS: value = value.split(AVIDA_SET_DELIM)
                 # Go ahead and add the value to the appropriate field.
                 avida_data[header[i]].append(value)
 
@@ -82,11 +89,10 @@ def main():
            
     # Convert Avida data into pandas data frame.
     df = pd.DataFrame(data = avida_data)
-    # df = df.sort_values(by=['id'])
     
     # Drop any fields we want to delete.
     del_fields = []
-    if minimal_out:
+    if minimal_output:
         # What fields should we delete (if we're doing minimal output)?
         min_fields = ["id", "ancestor_list", "origin_time"]
         del_fields = [field for field in avida_data if not field in min_fields]
@@ -96,12 +102,42 @@ def main():
     stds_hd = ["id", "ancestor_list", "origin_time"]
     new_header = stds_hd + [field for field in avida_data if (not field in stds_hd) and (not field in del_fields)]
     # Write output in requested format.
-    if (out_format == "csv"):
-        with open(out_fp, "w"):
-            df.to_csv(out_fp, sep=",", columns=new_header, index=False, index_label=False)
-    elif (out_format == "json"):
-        with open(out_fp, "w"):
-            df.to_json(out_fp, orient="index")
+    if (output_format == "csv"):
+        with open(output_fpath, "w"):
+            df.to_csv(output_fpath, sep=",", columns=new_header, index=False, index_label=False)
+    elif (output_format == "json"):
+        with open(output_fpath, "w"):
+            df.to_json(output_fpath, orient="index")
+    return True
 
+def main():
+    # Setup command line arguments.
+    parser = argparse.ArgumentParser(description="Avida .spop to ALife standard-compliant phylogeny converter.")
+    parser.add_argument("input", type=str, help="Input avida .spop file.")
+    parser.add_argument("-output", "-out", type=str, help="Name to assign to standard-compliant output file.")
+    parser.add_argument("-format", type=str, default="csv", help="What standard file format should this script output? Valid options: {}".format(VALID_OUT_FORMATS))
+    parser.add_argument("-minimal", action="store_true", help="Store minimal data in output file.")
+    parser.add_argument("-list_formats", "-lsf", action="store_true", help="List available output formats.")
+
+    # Parse command line arguments.
+    args = parser.parse_args()
+
+    if (args.list_formats):
+        print("Valid output formats include: {}".format(VALID_OUT_FORMATS))
+        print("File an issue here to request new formats: https://github.com/alife-data-standards/converters-avida/issues")
+        return
+
+    # Extract/validate arguments
+    in_fp = args.input
+    out_fp = args.output
+    out_format = args.format.lower()
+    minimal_out = args.minimal
+
+    print("Converting {}".format(in_fp))
+    if (Convert_AvidaSpop_To_StdPhylogeny(in_fp, out_fp, out_format, minimal_out)):
+        print("Success!")
+    else:
+        print("Ah! Something went wrong.")
+    
 if __name__ == "__main__":
     main()
