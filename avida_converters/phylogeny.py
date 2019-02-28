@@ -39,6 +39,7 @@ def Convert_AvidaSpop_To_StdPhylogeny(input_fpath, output_fpath=None, output_for
     Raises:
         ValueError: If input_fpath is invalid.
         ValueError: If output_format does not specify a supported format.
+        ValueError: If Avida IDs are not unique in the given input file.
 
     """    
     # Is input_fpath a valid file?
@@ -86,10 +87,15 @@ def Convert_AvidaSpop_To_StdPhylogeny(input_fpath, output_fpath=None, output_for
     avida_data["ancestor_list"] = [list(map(int, [-1 if anc == "(none)" else anc for anc in anc_lst])) for anc_lst in avida_data.pop("parents")]
     avida_data["origin_time"] = copy.deepcopy(avida_data["update_born"])
     avida_data["id"] = list(map(int, avida_data["id"]))
-           
+
+    # Are all IDs unique?
+    id_set = set(avida_data["id"])
+    if (len(avida_data["id"]) != len(id_set)):
+        raise ValueError("Avida organism IDs must be unique!")
+    
     # Convert Avida data into pandas data frame.
     df = pd.DataFrame(data = avida_data)
-    
+
     # Drop any fields we want to delete.
     del_fields = []
     if minimal_output:
@@ -102,12 +108,17 @@ def Convert_AvidaSpop_To_StdPhylogeny(input_fpath, output_fpath=None, output_for
     stds_hd = ["id", "ancestor_list", "origin_time"]
     new_header = stds_hd + [field for field in avida_data if (not field in stds_hd) and (not field in del_fields)]
     # Write output in requested format.
+
+    # print(len(df.id.unique()))
+    df.set_index("id", inplace=True, drop=False)
+
     if (output_format == "csv"):
         with open(output_fpath, "w"):
             df.to_csv(output_fpath, sep=",", columns=new_header, index=False, index_label=False)
     elif (output_format == "json"):
         with open(output_fpath, "w"):
             df.to_json(output_fpath, orient="index")
+
     return True
 
 def main():
