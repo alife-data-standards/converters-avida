@@ -9,6 +9,11 @@ or [(Ofria et al., 2009)](https://doi.org/10.1007/978-1-84882-285-6_1).
 This repository contains tools for converting from default Avida output formats to
 the [ALife standard data formats](https://github.com/alife-data-standards/alife-data-standards).
 
+## Example Data
+
+Find some example Avida data and the converted standard form of that data in [./example_data/](./example_data/).
+The `.spop` files are Avida population files (default Avida output files). They
+
 ## Phylogeny/Lineage Converter
 
 At the moment, there's only a Python implementation available.
