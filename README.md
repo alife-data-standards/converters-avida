@@ -3,6 +3,8 @@
 Avida is a digital evolution platform in which self-replicating computer programs
 (digital organisms) compete, mutate, and evolve. Find the Avida software platform
 [here](https://avida.devosoft.org/) or on [GitHub](https://github.com/devosoft/avida).
+Read more about Avida in [(Ofria and Wilke, 2004)](https://doi.org/10.1162/106454604773563612) 
+or [(Ofria et al., 2009)](https://doi.org/10.1007/978-1-84882-285-6_1).
 
 This repository contains tools for converting from default Avida output formats to
 the [ALife standard data formats](https://github.com/alife-data-standards/alife-data-standards).
