@@ -1,5 +1,7 @@
 # Data conversion tools for the Avida Digital Evolution Platform
 
+[![Build Status](https://travis-ci.org/alife-data-standards/converters-avida.svg?branch=master)](https://travis-ci.org/alife-data-standards/converters-avida)
+
 Avida is a digital evolution platform in which self-replicating computer programs
 (digital organisms) compete, mutate, and evolve. Find the Avida software platform
 [here](https://avida.devosoft.org/) or on [GitHub](https://github.com/devosoft/avida).
