@@ -1,6 +1,6 @@
 # Data conversion tools for the Avida Digital Evolution Platform
 
-[![Build Status](https://travis-ci.org/alife-data-standards/converters-avida.svg?branch=master)](https://travis-ci.org/alife-data-standards/converters-avida)
+[![Build Status](https://travis-ci.org/alife-data-standards/converters-avida.svg?branch=master)](https://travis-ci.org/alife-data-standards/converters-avida) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/21530327bc4943498b09e5ed0286e95f)](https://www.codacy.com/app/ALife-Data-Standards/converters-avida?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=alife-data-standards/converters-avida&amp;utm_campaign=Badge_Grade) [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/21530327bc4943498b09e5ed0286e95f)](https://www.codacy.com/app/ALife-Data-Standards/converters-avida?utm_source=github.com&utm_medium=referral&utm_content=alife-data-standards/converters-avida&utm_campaign=Badge_Coverage)
 
 Avida is a digital evolution platform in which self-replicating computer programs
 (digital organisms) compete, mutate, and evolve. Find the Avida software platform
