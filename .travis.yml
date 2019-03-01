@@ -4,6 +4,11 @@ python: 3.7
 
 install:
   - pip install -r requirements.txt
+  - pip install coverage
+  - pip install pytest-cov
+  - pip install codacy-coverage
   - pip install .
 script:
-  - pytest
+  - pytest --cov=avida_converters
+  - coverage xml
+  - python-codacy-coverage -r coverage.xml
