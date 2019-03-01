@@ -7,7 +7,7 @@ install:
   - pip install coverage
   - pip install pytest-cov
   - pip install codacy-coverage
-  - pip install .
+  - pip install -e .
 script:
   - pytest --cov=avida_converters
   - coverage xml
