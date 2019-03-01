@@ -41,7 +41,7 @@ def Convert_AvidaSpop_To_StdPhylogeny(input_fpath, output_fpath=None, output_for
         ValueError: If output_format does not specify a supported format.
         ValueError: If Avida IDs are not unique in the given input file.
 
-    """    
+    """
     # Is input_fpath a valid file?
     if (not os.path.isfile(input_fpath)):
         raise ValueError("Failed to find provided input file ({})".format(input_fpath))
@@ -58,7 +58,7 @@ def Convert_AvidaSpop_To_StdPhylogeny(input_fpath, output_fpath=None, output_for
         # Extract header information.
         header = None
         for line in fp:
-            if line[:7] == "#format": 
+            if line[:7] == "#format":
                 header = line.replace("#format", "").strip().split(" ")
                 break
         if header == None:
@@ -149,6 +149,6 @@ def main():
         print("Success!")
     else:
         print("Ah! Something went wrong.")
-    
+
 if __name__ == "__main__":
     main()
