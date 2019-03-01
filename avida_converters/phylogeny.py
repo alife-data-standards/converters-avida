@@ -103,7 +103,7 @@ def Convert_AvidaSpop_To_StdPhylogeny(input_fpath, output_fpath=None, output_for
         min_fields = ["id", "ancestor_list", "origin_time"]
         del_fields = [field for field in avida_data if not field in min_fields]
         df.drop(del_fields, axis=1, inplace=True)
-    
+
     # Adjust the header so that standard fields are up front.
     stds_hd = ["id", "ancestor_list", "origin_time"]
     new_header = stds_hd + [field for field in avida_data if (not field in stds_hd) and (not field in del_fields)]
