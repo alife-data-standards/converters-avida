@@ -84,9 +84,9 @@ def Convert_AvidaSpop_To_StdPhylogeny(input_fpath, output_fpath=None, output_for
                 avida_data[header[i]].append(value)
 
     # Clean up avida data to play with standard.
-    avida_data["ancestor_list"] = [list(map(int, ["none" if anc == "(none)" else anc for anc in anc_lst])) for anc_lst in avida_data.pop("parents")]
+    avida_data["ancestor_list"] = [list(["none" if anc == "(none)" else anc for anc in anc_lst]) for anc_lst in avida_data.pop("parents")]
     avida_data["origin_time"] = copy.deepcopy(avida_data["update_born"])
-    avida_data["id"] = list(map(int, avida_data["id"]))
+    avida_data["id"] = list(avida_data["id"])
 
     # Are all IDs unique?
     id_set = set(avida_data["id"])
