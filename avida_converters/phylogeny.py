@@ -32,10 +32,10 @@ def Convert_AvidaSpop_To_StdPhylogeny(input_fpath, output_fpath=None, output_for
             output formats ('CSV', 'JSON')
         minimal_output (boolean): Should output be minimal? If so, only output minimal
             requirements (+ available conventional fields) for phylogeny standard.
-    
+
     Returns:
         bool: True if successful, False otherwise.
-    
+
     Raises:
         ValueError: If input_fpath is invalid.
         ValueError: If output_format does not specify a supported format.
@@ -49,7 +49,7 @@ def Convert_AvidaSpop_To_StdPhylogeny(input_fpath, output_fpath=None, output_for
     # Is output_format valid?
     if (not output_format in VALID_OUT_FORMATS):
         raise ValueError("Invalid output format provided ({}). Valid arguments include: {}".format(output_format, VALID_OUT_FORMATS))
-    
+
     output_fpath = output_fpath if (output_fpath != None) else input_fpath.replace(".spop", "_standard-phylogeny.{}".format(output_format))
 
     # Open and parse input file into pandas data frame.
@@ -63,7 +63,7 @@ def Convert_AvidaSpop_To_StdPhylogeny(input_fpath, output_fpath=None, output_for
                 break
         if header == None:
             exit("Failed to find file format information in {}".format(input_fpath))
-        
+
         # Collect data from Avida file in format that will be easy to convert to
         # pandas dataframe object.
         avida_data = {field:[] for field in header}
@@ -92,7 +92,7 @@ def Convert_AvidaSpop_To_StdPhylogeny(input_fpath, output_fpath=None, output_for
     id_set = set(avida_data["id"])
     if (len(avida_data["id"]) != len(id_set)):
         raise ValueError("Avida organism IDs must be unique!")
-    
+
     # Convert Avida data into pandas data frame.
     df = pd.DataFrame(data = avida_data)
 
@@ -103,7 +103,7 @@ def Convert_AvidaSpop_To_StdPhylogeny(input_fpath, output_fpath=None, output_for
         min_fields = ["id", "ancestor_list", "origin_time"]
         del_fields = [field for field in avida_data if not field in min_fields]
         df.drop(del_fields, axis=1, inplace=True)
-    
+
     # Adjust the header so that standard fields are up front.
     stds_hd = ["id", "ancestor_list", "origin_time"]
     new_header = stds_hd + [field for field in avida_data if (not field in stds_hd) and (not field in del_fields)]

@@ -1,11 +1,11 @@
 # Data conversion tools for the Avida Digital Evolution Platform
 
-[![Build Status](https://travis-ci.org/alife-data-standards/converters-avida.svg?branch=master)](https://travis-ci.org/alife-data-standards/converters-avida)
+[![Build Status](https://travis-ci.org/alife-data-standards/converters-avida.svg?branch=master)](https://travis-ci.org/alife-data-standards/converters-avida) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/21530327bc4943498b09e5ed0286e95f)](https://www.codacy.com/app/ALife-Data-Standards/converters-avida?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=alife-data-standards/converters-avida&amp;utm_campaign=Badge_Grade) [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/21530327bc4943498b09e5ed0286e95f)](https://www.codacy.com/app/ALife-Data-Standards/converters-avida?utm_source=github.com&utm_medium=referral&utm_content=alife-data-standards/converters-avida&utm_campaign=Badge_Coverage)
 
 Avida is a digital evolution platform in which self-replicating computer programs
 (digital organisms) compete, mutate, and evolve. Find the Avida software platform
 [here](https://avida.devosoft.org/) or on [GitHub](https://github.com/devosoft/avida).
-Read more about Avida in [(Ofria and Wilke, 2004)](https://doi.org/10.1162/106454604773563612) 
+Read more about Avida in [(Ofria and Wilke, 2004)](https://doi.org/10.1162/106454604773563612)
 or [(Ofria et al., 2009)](https://doi.org/10.1007/978-1-84882-285-6_1).
 
 This repository contains tools for converting from default Avida output formats to
@@ -14,7 +14,10 @@ the [ALife standard data formats](https://github.com/alife-data-standards/alife-
 ## Example Data
 
 Find some example Avida data and the converted standard form of that data in [./example_data/](./example_data/).
-The `.spop` files are Avida population files (default Avida output files). They
+The `.spop` files are Avida population files (default Avida output files).
+They contain details about the genotypes in the current Avida population (extant
+genotypes) and details about the ancestral genotypes (going all the way back to
+the original population/organism) for all extant genotypes.
 
 ## Phylogeny/Lineage Converter
 
@@ -23,7 +26,7 @@ At the moment, there's only a Python implementation available.
 ### Python
 
 The phylogeny (and lineage) data conversion tool can be found in
-[./avida_converters/phylogeny.py](./avida_converters/phylogeny.py). 
+[./avida_converters/phylogeny.py](./avida_converters/phylogeny.py).
 
 #### Usage
 
